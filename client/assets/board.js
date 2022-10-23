@@ -20,15 +20,18 @@ function createPostElement (data) {
 async function loadPosts () {
     const response = await fetch("http://localhost:3000/posts");
     const posts = await response.json();
-    console.log(posts);
-    
-    const container = document.getElementById("posts");
 
-    posts.forEach(p => {
-        const elem = createPostElement(p);
-        console.log(elem)
-        container.appendChild(elem);
-    })
+    if (response.status = 200) {
+        const container = document.getElementById("posts");
+
+        posts.forEach(p => {
+            const elem = createPostElement(p);
+            console.log(elem)
+            container.appendChild(elem);
+        })
+    } else {
+        window.location.assign("./index.html");
+    }
 }
 
 loadPosts();
