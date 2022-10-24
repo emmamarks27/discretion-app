@@ -46,9 +46,7 @@ document.getElementById("post-form").addEventListener("submit", async (e) => {
 })
 
 async function loadPosts () {
-    const response = await fetch("http://localhost:3000/posts", {
-        credentials: 'include'
-    });
+    const response = await fetch("http://localhost:3000/posts");
 
     if (response.status == 200) {
         const posts = await response.json();
@@ -60,7 +58,7 @@ async function loadPosts () {
             container.appendChild(elem);
         })
     } else {
-        console.log("bad!");
+        window.location.assign("./index.html");
     }
 }
 
