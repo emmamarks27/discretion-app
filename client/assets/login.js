@@ -18,11 +18,12 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
     const response = await fetch("http://localhost:3000/users/login", options);
     const data = await response.json();
-
+    console.log(data);
     if (response.status == 200) {
+        localStorage.setItem("discretionUser", data["token"]);
         window.location.assign("./board.html");
     } else {
-        alert(`Error: ${error}`);
+        alert(`Error: ${data["error"]}`);
     }
 
 })
