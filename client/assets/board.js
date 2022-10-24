@@ -21,9 +21,7 @@ document.getElementById("post-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const form = new FormData(e.target);
-
-    console.log(target);
-
+    
     const options = {
         method: "POST",
         headers: {

@@ -13,8 +13,6 @@ async function register (req, res) {
         // Hash the password
         data["password"] = await bcrypt.hash(data["password"], salt);
 
-        console.log(salt, data["password"])
-
         const result = await User.create(data);
         res.status(201).send(result);
     } catch (err) {
