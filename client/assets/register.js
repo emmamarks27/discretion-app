@@ -1,4 +1,4 @@
-document.getElementById("login-form").addEventListener("submit", async (e) => {
+document.getElementById("register-form").addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
@@ -16,13 +16,12 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         })
     }
 
-    const response = await fetch("http://localhost:3000/users/login", options);
+    const response = await fetch("http://localhost:3000/users/register", options);
     const data = await response.json();
 
-    if (response.status == 200) {
-        window.location.assign("./board.html");
-    } else {
-        alert(`Error: ${error}`);
+    if (response.status == 201) {
+        alert(`User ${data["username"]} created!`);
+        window.location.assign("./login.html");
     }
 
 })
