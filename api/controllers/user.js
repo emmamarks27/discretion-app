@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
+const Token = require('../models/token');
 
 async function register (req, res) {
     try {
@@ -40,14 +41,24 @@ async function login (req, res) {
         if (!authenticated) {
             throw new Error("Incorrect credentials.");
         } else {
-            res.status(200).json({authenticated: true});
-        }
 
+            const token = await Token.create(user["id"]);
+            res.cookie("discretionUser", token.token, { maxAge: 3600000 })
+
+            res.status(200).json({ authenticated: true });
+        }
     } catch (err) {
         res.status(403).json({"error": err.message})
     }
 }
 
+function logout(req, res) {
+
+    res.clearCookie("discretionUser");
+    res.status(204).end();
+
+}
+
 module.exports = {
-    register, show, login
+    register, show, login, logout
 }
