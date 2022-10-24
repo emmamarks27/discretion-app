@@ -17,16 +17,40 @@ function createPostElement (data) {
     return post;
 }
 
+document.getElementById("post-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const form = new FormData(e.target);
+
+    const options = {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title: form.get("title"),
+            content: form.get("content"),
+            sender_id: form.get("sender_id"),
+            recipient_id: form.get("recipient_id")
+        })
+    }
+
+    const result = await fetch("http://localhost:3000/posts", options);
+
+    if (result.status == 201) {
+        window.location.reload();
+    }
+})
+
 async function loadPosts () {
     const response = await fetch("http://localhost:3000/posts");
     const posts = await response.json();
-    console.log(posts);
     
     const container = document.getElementById("posts");
 
     posts.forEach(p => {
         const elem = createPostElement(p);
-        console.log(elem)
         container.appendChild(elem);
     })
 }
