@@ -51,6 +51,7 @@ async function handleSubmit(e) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('discretionUser'),
     },
     body: JSON.stringify({
       title: formMsg.get('title'),

@@ -1,15 +1,15 @@
 const Token = require('../models/token');
 
-function authenticator(req, res, next) {
+async function authenticator(req, res, next) {
   try {
     //const userCookie = req.cookies.discretionUser;
     const userToken = req.headers['authorization'];
     console.log(userToken);
-    if (!userToken) {
+    if (userToken === 'null') {
       throw new Error('User not authenticated.');
     } else {
       //Can we find a token matching it?
-      const validToken = Token.getOneByToken(userToken);
+      const validToken = await Token.getOneByToken(userToken);
 
       next();
     }
