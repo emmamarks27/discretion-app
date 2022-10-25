@@ -19,8 +19,9 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   const data = await response.json();
 
   if (response.status == 200) {
+    localStorage.setItem('discretionUser', data['token']);
     window.location.assign('./board.html');
   } else {
-    alert(`Error: ${error}`);
+    alert(`Error: ${data['error']}`);
   }
 });

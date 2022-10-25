@@ -17,7 +17,17 @@ h3 {
   line-height: 1.2;
 }
 
-#submit-message {
+#posts h2 {
+  margin-bottom: 0;
+  text-transform: capitalize;
+}
+
+#posts p {
+  margin-top: 0.5em;
+  opacity: 0.8;
+}
+
+#post-form {
   display: flex;
   flex-direction: column;
   border: 1px solid black;
@@ -25,7 +35,7 @@ h3 {
   border-radius: 10px;
 }
 
-#submit-message input {
+#post-form input {
   margin-bottom: 1em;
   padding: 1em;
 }
@@ -47,6 +57,8 @@ h3 {
 
 fieldset {
   border: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {

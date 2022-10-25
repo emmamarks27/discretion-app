@@ -22,14 +22,14 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
 
   const form = new FormData(e.target);
 
-  console.log(target);
-
   const options = {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('discretionUser'),
     },
+
     body: JSON.stringify({
       title: form.get('title'),
       content: form.get('content'),
@@ -46,9 +46,13 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
 });
 
 async function loadPosts() {
-  const response = await fetch('http://localhost:3000/posts', {
-    credentials: 'include',
-  });
+  const options = {
+    headers: {
+      Authorization: localStorage.getItem('discretionUser'),
+    },
+  };
+
+  const response = await fetch('http://localhost:3000/posts', options);
 
   if (response.status == 200) {
     const posts = await response.json();
@@ -64,8 +68,8 @@ async function loadPosts() {
   }
 }
 
-const form = document.getElementById('submit-message');
-form.addEventListener('submit', handleSubmit);
+// const form = document.getElementById('submit-message');
+// form.addEventListener('submit', handleSubmit);
 loadPosts();
 
 //  body: JSON.stringify({
