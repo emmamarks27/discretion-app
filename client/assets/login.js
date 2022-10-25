@@ -24,9 +24,10 @@ async function handleSubmit(e) {
   console.log(data);
 
   if (results.status == 200) {
+    localStorage.setItem('discretionUser', data['token']);
     window.location.assign('./board.html');
   } else {
-    alert(`Error: could not successfully log in.`);
+    alert(`Error: ${data['error']}.`);
   }
 }
 
