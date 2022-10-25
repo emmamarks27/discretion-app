@@ -17,54 +17,50 @@ function createPostElement(data) {
   return post;
 }
 
-async function loadPosts() {
-  const options = {
-    headers: {
-      Authorization: localStorage.getItem('discretionUser'),
-    },
-  };
-  const response = await fetch('http://localhost:3000/posts', options);
-
-  if (response.status == 200) {
-    const posts = await response.json();
-    console.log(posts);
-
-    const container = document.getElementById('posts');
-
-    posts.forEach((p) => {
-      const elem = createPostElement(p);
-      console.log(elem);
-      container.appendChild(elem);
-    });
-  } else {
-    window.location.assign('./index.html');
-  }
-}
-
-async function handleSubmit(e) {
+document.getElementById('post-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const formMsg = new FormData(e.target);
+  const form = new FormData(e.target);
+
+  console.log(target);
 
   const options = {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('discretionUser'),
     },
     body: JSON.stringify({
-      title: formMsg.get('title'),
-      content: formMsg.get('content'),
-      sender_id: formMsg.get('sender_id'),
-      recipient_id: formMsg.get('recipient_id'),
+      title: form.get('title'),
+      content: form.get('content'),
+      sender_id: form.get('sender_id'),
+      recipient_id: form.get('recipient_id'),
     }),
   };
 
-  const results = await fetch('http://localhost:3000/posts', options);
+  const result = await fetch('http://localhost:3000/posts', options);
 
-  if (results.status == 201) {
+  if (result.status == 201) {
     window.location.reload();
+  }
+});
+
+async function loadPosts() {
+  const response = await fetch('http://localhost:3000/posts', {
+    credentials: 'include',
+  });
+
+  if (response.status == 200) {
+    const posts = await response.json();
+
+    const container = document.getElementById('posts');
+
+    posts.forEach((p) => {
+      const elem = createPostElement(p);
+      container.appendChild(elem);
+    });
+  } else {
+    console.log('bad!');
   }
 }
 

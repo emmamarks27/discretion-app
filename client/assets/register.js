@@ -1,34 +1,30 @@
-async function handleSubmit(e) {
-  e.preventDefault();
+document
+  .getElementById('register-form')
+  .addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  const formMsg = new FormData(e.target);
+    const form = new FormData(e.target);
 
-  const options = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: formMsg.get('username'),
-      password: formMsg.get('password'),
-      //   sender_id: formMsg.get('sender_id'),
-      //   recipient_id: formMsg.get('recipient_id'),
-    }),
-  };
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: form.get('username'),
+        password: form.get('password'),
+      }),
+    };
 
-  console.log('username', formMsg.get('username'));
+    const response = await fetch(
+      'http://localhost:3000/users/register',
+      options
+    );
+    const data = await response.json();
 
-  const results = await fetch('http://localhost:3000/users/register', options);
-  const data = await results.json();
-  console.log(data);
-
-  if (results.status == 201) {
-    alert(`User ${data['username']} created!`);
-    window.location.assign('./login.html');
-  }
-}
-
-const form = document.getElementById('register-form');
-form.addEventListener('submit', handleSubmit);
-//loadPosts();
+    if (response.status == 201) {
+      alert(`User ${data['username']} created!`);
+      window.location.assign('./login.html');
+    }
+  });

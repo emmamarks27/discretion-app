@@ -1,7 +1,7 @@
-async function handleSubmit(e) {
+document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const formMsg = new FormData(e.target);
+  const form = new FormData(e.target);
 
   const options = {
     method: 'POST',
@@ -10,27 +10,17 @@ async function handleSubmit(e) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      username: formMsg.get('username'),
-      password: formMsg.get('password'),
-      //   sender_id: formMsg.get('sender_id'),
-      //   recipient_id: formMsg.get('recipient_id'),
+      username: form.get('username'),
+      password: form.get('password'),
     }),
   };
 
-  console.log(formMsg.get('username'));
+  const response = await fetch('http://localhost:3000/users/login', options);
+  const data = await response.json();
 
-  const results = await fetch('http://localhost:3000/users/login', options);
-  const data = await results.json();
-  console.log(data);
-
-  if (results.status == 200) {
-    localStorage.setItem('discretionUser', data['token']);
+  if (response.status == 200) {
     window.location.assign('./board.html');
   } else {
-    alert(`Error: ${data['error']}.`);
+    alert(`Error: ${error}`);
   }
-}
-
-const form = document.getElementById('login-form');
-form.addEventListener('submit', handleSubmit);
-//loadPosts();
+});

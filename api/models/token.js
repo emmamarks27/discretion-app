@@ -1,51 +1,42 @@
-//UUID is a library that generates unique IDs
-//We are grabbing v4 of uuid and naming it uuidv4, because other methods of importing it upset it.
+const { v4: uuidv4 } = require("uuid");
 
-//We create tokens so that users don't have to keep logging in on the site.
-//Otherwise we'd need to get users to keep logging in as they navigate around the site.
-const { v4: uuidv4 } = require('uuid');
-
-const db = require('../database/connect');
+const db = require("../database/connect");
 
 class Token {
-  constructor({ token_id, user_id, token }) {
-    this.token_id = token_id;
-    this.user_id = user_id;
-    this.token = token;
-  }
 
-  static async create(user_id) {
-    const token = uuidv4();
-    const response = await db.query(
-      'INSERT INTO token (user_id, token) VALUES ($1, $2) RETURNING token_id;',
-      [user_id, token]
-    );
-    const newId = response.rows[0].token_id;
-    const newToken = Token.getOneById(newId);
-    return newToken;
-  }
-
-  static async getOneById(id) {
-    const response = await db.query('SELECT * FROM token WHERE token_id = $1', [
-      id,
-    ]);
-    if (response.rows.length != 1) {
-      throw new Error('Unable to locate token.');
-    } else {
-      return new Token(response.rows[0]);
+    constructor({ token_id, user_id, token }){
+        this.token_id = token_id;
+        this.user_id = user_id;
+        this.token = token;
     }
-  }
 
-  static async getOneByToken(token) {
-    const response = await db.query('SELECT * FROM token WHERE token = $1', [
-      token,
-    ]);
-    if (response.rows.length != 1) {
-      throw new Error('Unable to locate token.');
-    } else {
-      return new Token(response.rows[0]);
+    static async create(user_id) {
+        const token = uuidv4();
+        const response = await db.query("INSERT INTO token (user_id, token) VALUES ($1, $2) RETURNING token_id;",
+            [user_id, token]);
+        const newId = response.rows[0].token_id;
+        const newToken = await Token.getOneById(newId);
+        return newToken;
     }
-  }
+
+    static async getOneById(id) {
+        const response = await db.query("SELECT * FROM token WHERE token_id = $1", [id]);
+        if (response.rows.length != 1) {
+            throw new Error("Unable to locate token.");
+        } else {
+            return new Token(response.rows[0]);
+        }
+    }
+
+    static async getOneByToken(token) {
+        const response = await db.query("SELECT * FROM token WHERE token = $1", [token]);
+        if (response.rows.length != 1) {
+            throw new Error("Unable to locate token.");
+        } else {
+            return new Token(response.rows[0]);
+        }
+    }
+
 }
 
 module.exports = Token;
