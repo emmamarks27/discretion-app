@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
 
 const logRoutes = require('./middleware/logger');
 
@@ -13,7 +12,6 @@ const api = express();
 //needs to access cookie-parser before you can use the authenticator
 api.use(cors());
 api.use(express.json());
-api.use(cookieParser());
 api.use(logRoutes);
 
 api.get('/', (req, res) => {
