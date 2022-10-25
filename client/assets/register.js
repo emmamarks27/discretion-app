@@ -17,19 +17,18 @@ async function handleSubmit(e) {
     }),
   };
 
-  console.log(formMsg.get('username'));
+  console.log('username', formMsg.get('username'));
 
-  const results = await fetch('http://localhost:3000/users/login', options);
+  const results = await fetch('http://localhost:3000/users/register', options);
   const data = await results.json();
   console.log(data);
 
-  if (results.status == 200) {
-    window.location.assign('./board.html');
-  } else {
-    alert(`Error: could not successfully log in.`);
+  if (results.status == 201) {
+    alert(`User ${data['username']} created!`);
+    window.location.assign('./login.html');
   }
 }
 
-const form = document.getElementById('login-form');
+const form = document.getElementById('register-form');
 form.addEventListener('submit', handleSubmit);
 //loadPosts();
