@@ -46,6 +46,7 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
 });
 
 async function loadPosts() {
+  console.log('This is the auth token', localStorage);
   const options = {
     headers: {
       Authorization: localStorage.getItem('discretionUser'),
@@ -64,6 +65,7 @@ async function loadPosts() {
       container.appendChild(elem);
     });
   } else {
+    alert('Sorry you need to be logged in to view the posts.');
     console.log('bad!');
   }
 }
