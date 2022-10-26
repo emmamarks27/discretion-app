@@ -16,8 +16,6 @@ function authenticator(req, res, next) {
   } catch (err) {
     res.status(403).json({ error: err.message });
   }
-
-  console.log('COOKIES:', req.cookies);
 }
 
 module.exports = authenticator;

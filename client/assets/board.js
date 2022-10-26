@@ -11,8 +11,12 @@ function createPostElement(data) {
   post.appendChild(content);
 
   const sender = document.createElement('em');
-  sender.textContent = data['sender_name'];
+  sender.textContent = `sender id: ${data['sender_id']}`;
   post.appendChild(sender);
+
+  const recipient = document.createElement('em');
+  recipient.textContent = `recipient id: ${data['recipient_id']}`;
+  post.appendChild(recipient);
 
   return post;
 }
@@ -28,6 +32,7 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: localStorage.getItem('discretionUser'),
+      userName: localStorage.getItem('userName'),
     },
 
     body: JSON.stringify({
@@ -42,6 +47,9 @@ document.getElementById('post-form').addEventListener('submit', async (e) => {
 
   if (result.status == 201) {
     window.location.reload();
+  } else {
+    let alert = `<h2>Sorry, you need to be logged in to post a message ☹️</h2>`;
+    updateMsg.innerHTML = alert;
   }
 });
 
@@ -50,6 +58,7 @@ async function loadPosts() {
   const options = {
     headers: {
       Authorization: localStorage.getItem('discretionUser'),
+      userName: localStorage.getItem('userName'),
     },
   };
 
@@ -57,6 +66,7 @@ async function loadPosts() {
 
   if (response.status == 200) {
     const posts = await response.json();
+    console.log('Here is the post', posts);
 
     const container = document.getElementById('posts');
 
@@ -65,10 +75,11 @@ async function loadPosts() {
       container.appendChild(elem);
     });
   } else {
-    alert('Sorry you need to be logged in to view the posts.');
     console.log('bad!');
   }
 }
+
+const updateMsg = document.querySelector('#alert-msg');
 
 // const form = document.getElementById('submit-message');
 // form.addEventListener('submit', handleSubmit);

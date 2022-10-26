@@ -20,6 +20,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
   if (response.status == 200) {
     localStorage.setItem('discretionUser', data['token']);
+    localStorage.setItem('userName', form.get('username'));
     window.location.assign('./board.html');
   } else {
     alert(`Error: ${data['error']}`);
